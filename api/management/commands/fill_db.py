@@ -22,7 +22,7 @@ class Command(BaseCommand):
         scales = ("K", "\u2103", "\u2109")
         plural = False
 
-        if locations_count > 0:
+        if locations_count:
             if locations_count > 1:
                 plural = True
 

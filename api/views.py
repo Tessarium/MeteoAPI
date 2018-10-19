@@ -1,4 +1,7 @@
+from django.shortcuts import get_object_or_404, HttpResponse
 from rest_framework import generics, mixins
+from rest_framework.response import Response
+from rest_framework.views import status
 from .models import Location, Temperature
 from .serializers import LocationSerializer, TemperatureSerializer
 
@@ -47,9 +50,10 @@ class ListTemperaturesView(mixins.ListModelMixin,
         by filtering against a `date` query parameter in the URL.
         """
         queryset = Temperature.objects.all()
-        date = self.request.query_params.get('date', None)
-        date_start = self.request.query_params.get('date_start', None)
-        date_end = self.request.query_params.get('date_end', None)
+
+        date = self.request.query_params.get("date", None)
+        date_start = self.request.query_params.get("date_start", None)
+        date_end = self.request.query_params.get("date_end", None)
 
         if date is not None:
             queryset = queryset.filter(date__startswith=date)
@@ -60,6 +64,7 @@ class ListTemperaturesView(mixins.ListModelMixin,
                 queryset = queryset.filter(date__range=(date_start,
                                                         dt.strptime(date_start, "%Y-%m-%d") +
                                                         datetime.timedelta(days=3)))
+
         return queryset
 
     def get(self, request, *args, **kwargs):
@@ -69,7 +74,6 @@ class ListTemperaturesView(mixins.ListModelMixin,
         return self.create(request, *args, **kwargs)
 
 
-# slightly different realization
 class ListTemperaturesInLocationView(generics.ListAPIView):
     """
     Provides a get and a post methods handlers of temperatures in a location.
@@ -82,7 +86,7 @@ class ListTemperaturesInLocationView(generics.ListAPIView):
         This view should return a list of all the purchases for
         the user as determined by the username portion of the URL.
         """
-        pk = self.kwargs['pk']
+        pk = self.kwargs["pk"]
         return Temperature.objects.filter(location__pk=pk)
 
 
@@ -99,4 +103,37 @@ class DetailTemperaturesView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Temperature.objects.all()
     serializer_class = TemperatureSerializer
 
+    def get_object(self):
+        queryset = self.get_queryset()
+        filter_by_pk = {"pk": self.kwargs["pk"]}
+        temperature = get_object_or_404(queryset, **filter_by_pk)
 
+        scale = self.request.query_params.get("scale", None)
+
+        if scale is not None:
+            if not temperature.scale == scale:
+                temperature.value = float(temperature.value)
+                if scale == "K":
+                    if temperature.scale == "\u2103":
+                        temperature.value += 273.15
+                    else:
+                        temperature.value = (temperature.value + 459.67) / 1.8
+                    temperature.scale = "K"
+                elif scale == "\u2103":
+                    if temperature.scale == "K":
+                        temperature.value -= 273.15
+                    else:
+                        temperature.value = (temperature.value - 32) / 1.8
+                    temperature.scale = "\u2103"
+                elif scale == "\u2109":
+                    if temperature.scale == "K":
+                        temperature.value = temperature.value * 1.8 - 459.67
+                    else:
+                        temperature.value = temperature.value * 1.8 + 32
+                    temperature.scale = "\u2109"
+                else:
+                    temperature.scale = "Invalid scale: " + scale + \
+                                        " (possible variants are 'K', '\u2103', '\u2109'.)"
+                    temperature.value = None
+
+        return temperature
