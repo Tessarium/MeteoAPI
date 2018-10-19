@@ -8,5 +8,5 @@ urlpatterns = [
     path('temperatures/', ListTemperaturesView.as_view(), name="list-temperatures-create"),
     path('temperatures/<int:pk>', DetailTemperaturesView.as_view(), name="detail-temperature"),
     path('temperatures/location/<int:pk>/', ListTemperaturesInLocationView.as_view(),
-         name="list-temperatures-location"),
+         name="list-temperatures-location")
 ]

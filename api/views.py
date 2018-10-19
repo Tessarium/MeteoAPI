@@ -10,8 +10,12 @@ from datetime import datetime as dt
 class ListLocationsView(generics.ListCreateAPIView):
     """
     Provides a get and a post methods handlers of locations.
-    GET locations/
-    POST locations/
+
+    get:
+    Returns all locations.
+
+    post:
+    Creates a new location object.
     """
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
@@ -19,13 +23,19 @@ class ListLocationsView(generics.ListCreateAPIView):
 
 class DetailLocationsView(generics.RetrieveUpdateDestroyAPIView):
     """
-    Provides a get, a put and a delete methods handlers of a location.
-    GET locations/:id/
-    PUT locations/:id/
-    PATCH locations/:id/
-    DELETE locations/:id/
-    HEAD locations/:id/
-    OPTIONS locations/:id/
+    Request with the primary key of the location object.
+
+    get:
+    Returns the location.
+
+    put:
+    Updates the location.
+
+    patch:
+    Partial updates the location.
+
+    delete:
+    Deletes the location.
     """
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
@@ -36,16 +46,24 @@ class ListTemperaturesView(mixins.ListModelMixin,
                            generics.GenericAPIView):
     """
     Provides a get and a post methods handlers of temperatures.
-    GET temperatures/
-    POST temperatures/
+
+    get:
+    Returns all temperatures.
+    It returns all temperatures in a range of 3 days by adding parameter
+    'date' (ex. 2018-10-23). It returns all temperatures in the
+     specified range by adding a 'date_start' and a 'date_end' parameters.
+
+    post:
+    Creates a new temperature.
     """
     queryset = Temperature.objects.all()
     serializer_class = TemperatureSerializer
 
     def get_queryset(self):
         """
-        Optionally restricts the returned temperatures to dates,
-        by filtering against a `date` query parameter in the URL.
+        Optionally restricts the returned temperatures,
+        by filtering against a 'date', a 'date_start' and a 'date_end'
+        query parameter in the URL.
         """
         queryset = Temperature.objects.all()
 
@@ -74,15 +92,17 @@ class ListTemperaturesView(mixins.ListModelMixin,
 
 class ListTemperaturesInLocationView(generics.ListAPIView):
     """
-    Provides a get and a post methods handlers of temperatures in a location.
-    GET temperatures/location/:id_location/
+    Provides a get method handler of the temperatures
+    in the specified location.
+
+    get:
+    Returns all temperatures in the location.
     """
     serializer_class = TemperatureSerializer
 
     def get_queryset(self):
         """
-        This view should return a list of all the purchases for
-        the user as determined by the username portion of the URL.
+        Returns a list of all temperatures in the specified location.
         """
         pk = self.kwargs["pk"]
         return Temperature.objects.filter(location__pk=pk)
@@ -90,18 +110,30 @@ class ListTemperaturesInLocationView(generics.ListAPIView):
 
 class DetailTemperaturesView(generics.RetrieveUpdateDestroyAPIView):
     """
-    Provides a get, a put and a delete method handlers of a temperature.
-    GET temperatures/:id/
-    PUT temperatures/:id/
-    PATCH temperature/:id/
-    DELETE temperatures/:id/
-    HEAD temperature/:id/
-    OPTIONS temperatures/:id/
+    Request with the primary key of the temperature object.
+
+    get:
+    Returns the temperature.
+    It returns converted value with specified scale,
+    by adding parameter of the scale (allowed - 'K', '\u2103', '\u2109').
+
+    put:
+    Updates the temperature.
+
+    patch:
+    Partial updates the temperature.
+
+    delete:
+    Deletes the temperature
     """
     queryset = Temperature.objects.all()
     serializer_class = TemperatureSerializer
 
     def get_object(self):
+        """
+        Optionally converts the returned temperatures
+        by adding against a `scale` query parameter.
+        """
         queryset = self.get_queryset()
         filter_by_pk = {"pk": self.kwargs["pk"]}
         temperature = get_object_or_404(queryset, **filter_by_pk)
