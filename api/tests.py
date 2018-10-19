@@ -68,8 +68,8 @@ class ResponsesTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["location"], 1)
         self.assertEqual(response.data["scale"], "\u2103")
-        self.assertEqual(response.data["value"], "10.0")
-        self.assertEqual(str(timezone.datetime.strptime(response.data["date"], "%Y-%m-%dT%H:%M:%S.%fZ")),
+        self.assertEqual(response.data["value"], "10.00")
+        self.assertEqual(str(timezone.datetime.strptime(response.data["date"], "%Y-%m-%dT%H:%M:%S.%f")),
                          self.time_now.strftime("%Y-%m-%d %H:%M:%S.%f"))
 
     def test_response_locations(self):
@@ -146,3 +146,51 @@ class ResponsesTests(APITestCase):
         response = self.client.delete(reverse("detail-temperature", kwargs={"version": "v1", "pk": 1}))
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_temperature_scales(self):
+        """
+        Ensure we can get correct values of temperature in different scales.
+        """
+        temperature_kelvin = Temperature.objects.create(location=self.location, scale="K", value=-10,
+                                                        date=self.time_now)
+        temperature_fahrenheit = Temperature.objects.create(location=self.location, scale="\u2109", value=-10,
+                                                            date=self.time_now)
+
+        response_kelvin_first = self.client.get(reverse("detail-temperature", kwargs={"version": "v1", "pk": 1}),
+                                                data={"scale": "K"})
+        response_fahrenheit_first = self.client.get(reverse("detail-temperature", kwargs={"version": "v1", "pk": 1}),
+                                                    data={"scale": "\u2109"})
+
+        response_celsius_second = self.client.get(reverse("detail-temperature", kwargs={"version": "v1", "pk": 2}),
+                                                  data={"scale": "\u2103"})
+        response_fahrenheit_second = self.client.get(reverse("detail-temperature", kwargs={"version": "v1", "pk": 2}),
+                                                     data={"scale": "\u2109"})
+
+        response_kelvin_third = self.client.get(reverse("detail-temperature", kwargs={"version": "v1", "pk": 3}),
+                                                data={"scale": "K"})
+        response_celsius_third = self.client.get(reverse("detail-temperature", kwargs={"version": "v1", "pk": 3}),
+                                                 data={"scale": "\u2103"})
+
+        self.assertEqual(response_kelvin_first.status_code, status.HTTP_200_OK)
+        self.assertEqual(float(self.temperature.value) + 273.15, float(response_kelvin_first.data["value"]))
+        self.assertEqual(response_kelvin_first.data["scale"], "K")
+
+        self.assertEqual(response_fahrenheit_first.status_code, status.HTTP_200_OK)
+        self.assertEqual(float(self.temperature.value) * 1.8 + 32, float(response_fahrenheit_first.data["value"]))
+        self.assertEqual(response_fahrenheit_first.data["scale"], "\u2109")
+
+        self.assertEqual(response_celsius_second.status_code, status.HTTP_200_OK)
+        self.assertEqual(float(temperature_kelvin.value) - 273.15, float(response_celsius_second.data["value"]))
+        self.assertEqual(response_celsius_second.data["scale"], "\u2103")
+
+        self.assertEqual(response_fahrenheit_second.status_code, status.HTTP_200_OK)
+        self.assertEqual(float(temperature_kelvin.value) * 1.8 - 459.67, float(response_fahrenheit_second.data["value"]))
+        self.assertEqual(response_fahrenheit_second.data["scale"], "\u2109")
+
+        self.assertEqual(response_kelvin_third.status_code, status.HTTP_200_OK)
+        self.assertEqual(round(((float(temperature_fahrenheit.value) + 459.67) / 1.8), 2), float(response_kelvin_third.data["value"]))
+        self.assertEqual(response_kelvin_third.data["scale"], "K")
+
+        self.assertEqual(response_celsius_third.status_code, status.HTTP_200_OK)
+        self.assertEqual(round(((float(temperature_fahrenheit.value) - 32) / 1.8), 2), float(response_celsius_third.data["value"]))
+        self.assertEqual(response_celsius_third.data["scale"], "\u2103")

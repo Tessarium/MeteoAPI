@@ -1,7 +1,5 @@
-from django.shortcuts import get_object_or_404, HttpResponse
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, mixins
-from rest_framework.response import Response
-from rest_framework.views import status
 from .models import Location, Temperature
 from .serializers import LocationSerializer, TemperatureSerializer
 
