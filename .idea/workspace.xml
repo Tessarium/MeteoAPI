@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c0c9feb-8097-4eb6-b901-e982c4dbfb96" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Meteo/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Meteo/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/management/commands/fill_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/management/commands/fill_db.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,12 +27,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Django Console" value="15" />
-          <entry key="py" value="6857" />
+          <entry key="py" value="6899" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="6872" />
+          <entry key="Python" value="6914" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -76,12 +75,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/management/commands/fill_db.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="617">
-              <caret line="44" column="36" selection-start-line="44" selection-start-column="36" selection-end-line="44" selection-end-column="36" />
+            <state relative-caret-position="484">
+              <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
               <folding>
                 <element signature="e#0#65#0" expanded="true" />
-                <marker date="1539954134790" expanded="true" signature="207:212" ph="..." />
-                <marker date="1539954134790" expanded="true" signature="517:523" ph="..." />
+                <marker date="1539955417357" expanded="true" signature="207:212" ph="..." />
+                <marker date="1539955417357" expanded="true" signature="517:523" ph="..." />
               </folding>
             </state>
           </provider>
@@ -171,8 +170,8 @@
         <option value="$PROJECT_DIR$/api/models.py" />
         <option value="$PROJECT_DIR$/api/urls.py" />
         <option value="$PROJECT_DIR$/api/tests.py" />
-        <option value="$PROJECT_DIR$/api/management/commands/fill_db.py" />
         <option value="$PROJECT_DIR$/Meteo/settings.py" />
+        <option value="$PROJECT_DIR$/api/management/commands/fill_db.py" />
       </list>
     </option>
   </component>
@@ -290,6 +289,29 @@
     <frame x="-3" y="31" width="1030" height="691" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info content_ui="combo" id="Project" order="0" weight="0.25967413" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.28125" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.3290441" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+    </layout>
+    <layout-to-restore>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25967413" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -311,7 +333,7 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info anchor="right" id="Database" order="4" />
-    </layout>
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -453,12 +475,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/management/commands/fill_db.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="617">
-          <caret line="44" column="36" selection-start-line="44" selection-start-column="36" selection-end-line="44" selection-end-column="36" />
+        <state relative-caret-position="484">
+          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
           <folding>
             <element signature="e#0#65#0" expanded="true" />
-            <marker date="1539954134790" expanded="true" signature="207:212" ph="..." />
-            <marker date="1539954134790" expanded="true" signature="517:523" ph="..." />
+            <marker date="1539955417357" expanded="true" signature="207:212" ph="..." />
+            <marker date="1539955417357" expanded="true" signature="517:523" ph="..." />
           </folding>
         </state>
       </provider>

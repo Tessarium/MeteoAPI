@@ -18,15 +18,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         date = dt.strptime(options['date'], "%Y-%m-%d")
         locations = Location.objects.all()
+        locations_count = locations.__len__()
         scales = ("K", "\u2103", "\u2109")
+        plural = False
 
-        if locations.exists():
-            locations_count = locations.__len__()
-
+        if locations_count > 0:
             if locations_count > 1:
                 plural = True
-            else:
-                plural = False
 
             while date < dt.now():
                 date += datetime.timedelta(hours=6)
@@ -43,4 +41,3 @@ class Command(BaseCommand):
         else:
             print("Location doesnt exist\n"
                   "Create locations")
-
