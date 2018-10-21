@@ -21,9 +21,7 @@ python manage.py test (or python3 manage.py test)
 
 ## Documentation
 
-```
-https://localhost/docs/
-```
+[![](http://meteo.nulla.tech/static/Screenshot_1.png)](http://meteo.nulla.tech/docs/)
 
 | URL  | Method | Required parameters | Addition parameters | Description |
 | :---         |     :---:      |     :---:      |     :---:      |     :---:      |
